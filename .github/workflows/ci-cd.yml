@@ -1,4 +1,4 @@
-name: Pipeline CI/CD - ÁguaViva
+name: Pipeline CI/CD - ÁguaViva (Docker)
 
 on:
   push:
@@ -8,26 +8,29 @@ on:
 
 jobs:
   ci:
-    name: CI - Validação do Código
+    name: CI - Build e Teste da Imagem Docker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v4
 
-      - name: Verificar existência do index.html
+      - name: Verificar arquivos do projeto
         run: |
           test -f index.html
-          echo "Arquivo index.html encontrado com sucesso."
+          test -f Dockerfile
 
-      - name: Validar estrutura HTML e rótulo da instância
+      - name: Construir imagem Docker (docker build)
+        run: docker build -t aguaviva-web:ci .
+
+      - name: Testar container em execução
         run: |
-          grep -q "<!DOCTYPE html>" index.html
-          grep -q "INSTANCE_LABEL" index.html
-          grep -q "</html>" index.html
-          echo "Estrutura HTML e marcador de instância validados."
+          docker run -d --name aguaviva-test -p 8080:80 aguaviva-web:ci
+          sleep 2
+          curl -f http://localhost:8080 | grep -q "ÁguaViva"
+          docker rm -f aguaviva-test
 
   cd:
-    name: CD - Deploy na Instância EC2
+    name: CD - Deploy do Container na EC2
     needs: ci
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -41,7 +44,14 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key.pem
           chmod 600 ~/.ssh/ec2_key.pem
 
-      - name: Enviar index.html e reiniciar Nginx na EC2
+      - name: Enviar Dockerfile e subir container na EC2
         run: |
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem index.html ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/tmp/index.html
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "sudo mv /tmp/index.html /var/www/html/index.html && sudo systemctl reload nginx"
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "mkdir -p ~/aguaviva-app"
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem Dockerfile index.html ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/aguaviva-app/
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+            cd ~/aguaviva-app &&
+            sudo systemctl stop nginx 2>/dev/null || true &&
+            sudo docker build -t aguaviva-web:latest . &&
+            sudo docker rm -f aguaviva-container 2>/dev/null || true &&
+            sudo docker run -d --name aguaviva-container --restart unless-stopped -p 80:80 aguaviva-web:latest
+          "
