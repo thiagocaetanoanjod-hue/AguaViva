@@ -1,0 +1,47 @@
+name: Pipeline CI/CD - ÁguaViva
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  ci:
+    name: CI - Validação do Código
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Verificar existência do index.html
+        run: |
+          test -f index.html
+          echo "Arquivo index.html encontrado com sucesso."
+
+      - name: Validar estrutura HTML e rótulo da instância
+        run: |
+          grep -q "<!DOCTYPE html>" index.html
+          grep -q "INSTANCE_LABEL" index.html
+          grep -q "</html>" index.html
+          echo "Estrutura HTML e marcador de instância validados."
+
+  cd:
+    name: CD - Deploy na Instância EC2
+    needs: ci
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar chave SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key.pem
+          chmod 600 ~/.ssh/ec2_key.pem
+
+      - name: Enviar index.html e reiniciar Nginx na EC2
+        run: |
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem index.html ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/tmp/index.html
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "sudo mv /tmp/index.html /var/www/html/index.html && sudo systemctl reload nginx"
