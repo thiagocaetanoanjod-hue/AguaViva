@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Companhia ÁguaViva — Saneamento e Abastecimento de Água</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep:#062a3a; --deep2:#0a3a4f; --night:#04202c;
+    --aqua:#22b8c9; --aqua-d:#1591a0; --line:#15546a;
+    --txt:#eaf6f9; --mut:#92b6c2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--night);color:var(--txt);font-family:"Manrope",system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 30px}
+  h1,h2,h3,.dsp{font-family:"Manrope",sans-serif;letter-spacing:-.02em;line-height:1.08;font-weight:800}
+  .mono{font-family:"Roboto Mono",monospace}
+  a{color:inherit;text-decoration:none}
+  .wave{height:12px;background:linear-gradient(90deg,var(--aqua),var(--aqua-d))}
+  nav{position:sticky;top:0;z-index:20;background:rgba(4,32,44,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:1.18rem}
+  .drop{width:28px;height:28px;color:var(--aqua)}
+  .nav-links{display:flex;gap:30px;font-size:.84rem;font-weight:600;color:var(--mut)}
+  .nav-links a:hover{color:var(--aqua)}
+  @media(max-width:780px){.nav-links{display:none}}
+  header{position:relative;padding:104px 0 96px;overflow:hidden;background:
+    radial-gradient(800px 420px at 80% -10%,rgba(34,184,201,.2),transparent 60%),
+    linear-gradient(180deg,#04202c,#062a3a)}
+  .tag{display:inline-block;font-size:.76rem;font-weight:700;letter-spacing:.16em;color:var(--aqua);
+    border:1px solid var(--aqua-d);padding:7px 15px;border-radius:999px;text-transform:uppercase;margin-bottom:26px}
+  header h1{font-size:clamp(2.6rem,7vw,5rem)}
+  header h1 span{color:var(--aqua)}
+  .lede{max-width:640px;margin:24px 0 38px;color:var(--mut);font-size:1.08rem}
+  .cta{display:inline-flex;align-items:center;gap:10px;background:var(--aqua);color:#04202c;
+    font-weight:700;font-size:.9rem;padding:15px 30px;border-radius:12px;transition:.2s}
+  .cta:hover{background:#3fd2e2;transform:translateY(-2px)}
+  .reveal{opacity:0;transform:translateY(26px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .specs{border-block:1px solid var(--line);background:var(--deep)}
+  .specs .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+  .spec{padding:30px 22px;border-right:1px solid var(--line)}
+  .spec:last-child{border:none}
+  .spec b{display:block;font-size:1.9rem;color:#fff;font-weight:800}
+  .spec small{color:var(--mut);font-size:.78rem}
+  @media(max-width:760px){.specs .wrap{grid-template-columns:repeat(2,1fr)} .spec:nth-child(2){border:none}}
+  section{padding:88px 0}
+  .eyebrow{color:var(--aqua);font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+  h2{font-size:clamp(1.9rem,4vw,2.9rem);margin-bottom:18px}
+  .lead{color:var(--mut);max-width:660px;font-size:1.04rem}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:46px}
+  @media(max-width:880px){.grid3{grid-template-columns:1fr}}
+  .card{background:var(--deep);border:1px solid var(--line);padding:30px;border-radius:16px;transition:.25s}
+  .card:hover{border-color:var(--aqua);transform:translateY(-4px)}
+  .card h3{font-size:1.15rem;margin:6px 0 10px}
+  .card p{color:var(--mut);font-size:.95rem}
+  .prog{background:linear-gradient(120deg,#062a3a,#0a3a4f);border:1px solid var(--line);border-radius:18px;
+    padding:54px;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+  @media(max-width:880px){.prog{grid-template-columns:1fr;padding:34px}}
+  .prog h2 span{color:var(--aqua)}
+  .prog ul{list-style:none;margin-top:18px}
+  .prog li{padding:12px 0;border-bottom:1px solid var(--line);color:var(--mut);display:flex;gap:12px}
+  .prog li::before{content:"≈";color:var(--aqua);font-weight:700}
+  .bigq{font-size:clamp(1.3rem,2.6vw,1.9rem);color:#fff;line-height:1.25;font-weight:800}
+  footer{background:#03161e;border-top:1px solid var(--line);padding:60px 0 0}
+  .fgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:34px;padding-bottom:46px}
+  @media(max-width:760px){.fgrid{grid-template-columns:1fr}}
+  footer h4{font-size:.95rem;margin-bottom:14px;color:var(--aqua)}
+  footer p,footer a{color:var(--mut);font-size:.9rem;display:block;margin-bottom:7px}
+  .infra{border-top:1px solid var(--line);background:#021016;font-family:"Roboto Mono";font-size:.78rem}
+  .infra .wrap{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;padding:14px 30px;color:var(--mut)}
+  .badge{color:#04202c;background:var(--aqua);padding:3px 10px;font-weight:700;border-radius:6px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#39d353;display:inline-block;margin-right:7px;box-shadow:0 0 8px #39d353;animation:bl 1.6s infinite}
+  @keyframes bl{50%{opacity:.35}}
+</style>
+</head>
+<body>
+<div class="wave"></div>
+<nav><div class="wrap">
+  <div class="brand">
+    <svg class="drop" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s7 8 7 13a7 7 0 11-14 0c0-5 7-13 7-13zm0 6c-2 2.5-3 4.3-3 6a3 3 0 003 3z"/></svg>
+    ÁguaViva
+  </div>
+  <div class="nav-links"><a href="#cia">A companhia</a><a href="#smart">Rede inteligente</a><a href="#comp">Compromisso</a><a href="#contato">Contato</a></div>
+</div></nav>
+
+<header><div class="wrap reveal">
+  <span class="tag">Concessionária de saneamento · Desde 1996</span>
+  <h1>Água que<br>nunca para de<br><span>fluir</span>.</h1>
+  <p class="lede">Concessionária regional de saneamento que leva água tratada e coleta de esgoto a 1,1 milhão de clientes em 62 municípios — e moderniza sua rede com inteligência e segurança.</p>
+  <a href="#smart" class="cta">Conheça a rede inteligente →</a>
+</div></header>
+
+<div class="specs"><div class="wrap">
+  <div class="spec"><b>1,1 mi</b><small>clientes atendidos</small></div>
+  <div class="spec"><b>62</b><small>municípios</small></div>
+  <div class="spec"><b>54</b><small>estações monitoradas</small></div>
+  <div class="spec"><b>R$ 1,7 bi</b><small>receita anual</small></div>
+</div></div>
+
+<section id="cia"><div class="wrap">
+  <div class="eyebrow">A companhia</div>
+  <h2>Serviço essencial, responsabilidade permanente</h2>
+  <p class="lead">Concessionária pública desde 1996, a ÁguaViva mantém hospitais, indústrias e lares abastecidos — com 980 colaboradores dedicados à continuidade do serviço.</p>
+  <div class="grid3">
+    <div class="card"><h3>Tratamento</h3><p>Estações de tratamento de água e esgoto atendendo 62 municípios da região.</p></div>
+    <div class="card"><h3>Confiabilidade</h3><p>Operação 24/7 com centro de controle operacional e resposta a ocorrências na rede.</p></div>
+    <div class="card"><h3>Qualidade regulada</h3><p>Indicadores de cobertura e perdas acompanhados sob regulação da agência estadual e da ANA.</p></div>
+  </div>
+</div></section>
+
+<section id="smart" style="background:var(--deep)"><div class="wrap">
+  <div class="prog">
+    <div>
+      <div class="eyebrow">Modernização</div>
+      <h2>Plano <span>Rede Inteligente</span></h2>
+      <p class="lead" style="max-width:520px">R$ 160 milhões em 5 anos: hidrômetros inteligentes, sensores de pressão e vazão nas estações e detecção de perdas por IA. Uma rede que enxerga e reage.</p>
+      <ul>
+        <li>200 mil hidrômetros inteligentes já instalados, rumo a 1,1 milhão</li>
+        <li>640 mil downloads do app do consumidor, com pagamento via PIX</li>
+        <li>Detecção de perdas por IA em produção desde 2025</li>
+        <li>Modernização de sistemas legados de telemetria</li>
+      </ul>
+    </div>
+    <div><p class="bigq">"Modernizar a rede sem nunca parar de abastecer — esse é o nosso compromisso."</p></div>
+  </div>
+</div></section>
+
+<section id="comp"><div class="wrap">
+  <div class="eyebrow">Compromisso</div>
+  <h2>Continuidade e segurança em primeiro lugar</h2>
+  <p class="lead">Modernizar sem nunca parar de operar — protegendo a infraestrutura crítica e os dados de 1,1 milhão de clientes, em conformidade com a regulação do setor de saneamento.</p>
+  <div class="grid3">
+    <div class="card"><h3>97,8%</h3><p>Continuidade do abastecimento nos sistemas críticos.</p></div>
+    <div class="card"><h3>~520</h3><p>Ocorrências de campo tratadas por mês.</p></div>
+    <div class="card"><h3>IA</h3><p>Detecção de perdas e fraudes em produção desde 2025.</p></div>
+  </div>
+</div></section>
+
+<footer id="contato">
+  <div class="wrap fgrid">
+    <div><h4>Companhia ÁguaViva</h4><p>Concessionária regional de saneamento comprometida com a continuidade do serviço essencial e a modernização da rede.</p><p>Atuação regional · 62 municípios</p></div>
+    <div><h4>Serviços</h4><a>Atendimento ao cliente</a><a>App do consumidor</a><a>Ouvidoria</a></div>
+    <div><h4>Contato</h4><a>atendimento@aguaviva.exemplo</a><a>0800 000 0000</a></div>
+  </div>
+  <div class="infra"><div class="wrap">
+    <span><span class="dot"></span>Servido por <span class="badge" id="host">AguaViva EC2</span></span>
+    <span>Uptime: <span id="up">00:00:00</span></span>
+    <span>ÁguaViva · ambiente de demonstração</span>
+  </div></div>
+</footer>
+
+<script>
+  /* >>> ALUNO: altere INSTANCE_LABEL em CADA instância EC2 para visualizar o Auto Scaling pelo balanceador <<< */
+  const INSTANCE_LABEL = "AguaViva EC2";
+  document.getElementById("host").textContent = INSTANCE_LABEL;
+  document.title = "ÁguaViva · " + INSTANCE_LABEL;
+  const t0=Date.now();
+  setInterval(()=>{const s=(Date.now()-t0)/1000|0;
+    document.getElementById("up").textContent=
+    [s/3600|0,s/60%60|0,s%60].map(n=>String(n).padStart(2,'0')).join(':');},1000);
+</script>
+</body>
+</html>
